@@ -1,4 +1,5 @@
 #include "Page.hpp"
+#include "Config.hpp"
 
 #include <stdlib.h>
 

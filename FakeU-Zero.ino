@@ -1,4 +1,4 @@
-#define EMULATE 0
+#include "Config.hpp"
 
 #if EMULATE
 	#include <stdlib.h>
@@ -22,6 +22,10 @@ void setup()
 	page->options[1] = new_option("Clone RFID");
 
 	dump_option(page->options[0]);
+	#if EMULATE
+		puts("");
+	#endif
+	dump_option(page->options[1]);
 
 	free_page(page);
 }
@@ -32,6 +36,7 @@ void loop()
 #if EMULATE
 	int main(void)
 	{
+		printf("Press Ctrl+C to exit...\n\n");
 		setup();
 		while(EMULATE)
 			loop();

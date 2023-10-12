@@ -1,4 +1,5 @@
 #include "Option.hpp"
+#include "Config.hpp"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,6 +25,6 @@ void free_option(Option *option)
 void dump_option(Option *option)
 {
 	#if EMULATE
-		printf("Option: %p\nLabel: %s\nIs_Active: %d\n", option, option->label, option->is_active);
+		printf("\033[32mOption\033[0m: %p\n\033[32mLabel\033[0m: %s\n\033[32mIs_Active\033[0m: %d\n", option, option->label, option->is_active);
 	#endif
 }
