@@ -15,7 +15,8 @@
 #include "Page.hpp"
 
 int option_index;
-char button;
+size_t buffer_size;
+char button, *buffer;
 Page *page;
 
 void setup()
@@ -23,11 +24,10 @@ void setup()
 	#if EMULATE
 
 	#else
-		oled.begin();
-		oled.setFont(FONT8X16);
+		oled.begin(128, 64, sizeof(tiny4koled_init_128x64br), tiny4koled_init_128x64br);
+		oled.setFont(FONT6X8);
 		oled.clear();
 		oled.on();
-		oled.switchRenderFrame();
 	#endif
 
 	page = new_page(3);
@@ -35,25 +35,34 @@ void setup()
 	page->options[0] = new_option("Scan Wi-Fi");
 	page->options[1] = new_option("Clone RFID");
 	page->options[2] = new_option("Exit");
+
 	option_index = 0;
 	button = 0;
 }
+
 void loop()
 {
 	#if EMULATE
-		for(size_t i = 0; i < 3; i++)
+		system("clear");
+		for(size_t i = 0; i < page->amount_of_option; i++)
 		{
 			printf("%s%s\n", i == option_index ? "> " : "", page->options[i]->label);
 		}
+		getline(&buffer, &buffer_size, stdin);
+		if(*buffer == 's')
+			option_index += 1;
+		else if(*buffer == 'w')
+			option_index -= 1;
 	#else
-		oled.clear();
-		oled.setCursor(0, 1);
-		oled.print(F("ms: "));
-		oled.print(millis());
-		oled.switchFrame();
+		oled.setCursor(0, 2);
+		for(size_t i = 0; i < page->amount_of_option; i++)
+		{
+			oled.println(page->options[i]->label);
+		}
 		delay(50);
 	#endif
 }
+
 #if EMULATE
 	int main(void)
 	{
