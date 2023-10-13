@@ -5,13 +5,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-Option *new_option(const char *label)
+Option *new_option(const char *label, void (*execute)(void))
 {
 	Option *option = (Option*) malloc(sizeof(Option));
 	option->label = (char*) malloc(sizeof(char) * strlen(label));
 
 	strcpy(option->label, label);
 	option->is_active = false;
+	option->execute = execute;
 
 	return option;
 }
